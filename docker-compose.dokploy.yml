@@ -11,7 +11,7 @@ volumes:
 services:
   django: &django
     build:
-      context: .
+      context: ./backend
       dockerfile: ./compose/production/django/Dockerfile
 
     image: ecommerce_coderhouse_production_django
@@ -52,7 +52,7 @@ services:
 
   traefik:
     build:
-      context: .
+      context: ./backend
       dockerfile: ./compose/production/traefik/Dockerfile
     image: ecommerce_coderhouse_production_traefik
     depends_on:
@@ -105,7 +105,7 @@ services:
 
   nginx:
     build:
-      context: .
+      context: ./backend
       dockerfile: ./compose/production/nginx/Dockerfile
     image: ecommerce_coderhouse_production_nginx
     depends_on:
