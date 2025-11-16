@@ -6,7 +6,7 @@ volumes:
 services:
   django: &django
     build:
-      context: .
+      context: ./backend
       dockerfile: ./compose/local/django/Dockerfile
     image: ecommerce_coderhouse_local_django
     container_name: ecommerce_coderhouse_local_django
@@ -25,7 +25,7 @@ services:
 
   postgres:
     build:
-      context: .
+      context: ./backend
       dockerfile: ./compose/production/postgres/Dockerfile
     image: ecommerce_coderhouse_production_postgres
     container_name: ecommerce_coderhouse_local_postgres
@@ -68,3 +68,14 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./compose/local/Dockerfile
+    image: inventario_calibraciones_local_frontend
+    container_name: inventario_calibraciones_local_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - django
