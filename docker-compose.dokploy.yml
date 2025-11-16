@@ -49,6 +49,9 @@ services:
         limits:
           cpus: ${PGBOUNCER_CPU:-1}
           memory: ${PGBOUNCER_RAM:-1g}
+    # Network para conectarse a la bd de postgres en dokploy
+    networks:
+      - dokploy-network
 
   traefik:
     build:
@@ -141,3 +144,7 @@ services:
         limits:
           cpus: ${FRONTEND_CPU:-1}
           memory: ${FRONTEND_RAM:-1g}
+
+networks:
+  dokploy-network:
+    external: true
