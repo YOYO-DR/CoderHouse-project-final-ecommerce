@@ -4,6 +4,11 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+# Asegurar que los directorios de volúmenes existan y tengan permisos correctos
+mkdir -p /app/staticfiles /app/ecommerce_coderhouse/media
+chown -R django:django /app/staticfiles /app/ecommerce_coderhouse/media
+chmod -R 775 /app/staticfiles /app/ecommerce_coderhouse/media
+
 if [ -z "${PG_POSTGRES_USER}" ]; then
     base_postgres_image_default_user='postgres'
     export PG_POSTGRES_USER="${base_postgres_image_default_user}"
@@ -14,4 +19,5 @@ wait-for-it "${PG_POSTGRES_HOST}:${PG_POSTGRES_PORT}" -t 30
 
 >&2 echo 'PostgreSQL is available'
 
-exec "$@"
+# Ejecutar el comando como usuario django
+exec gosu django "$@"
