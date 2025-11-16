@@ -48,6 +48,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # entrypoint
   wait-for-it \
   telnet \
+  # gosu for step-down from root
+  gosu \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -87,14 +89,14 @@ RUN chmod +x /start-flower
 # copy application code to WORKDIR
 COPY --chown=django:django . ${APP_HOME}
 
-# Crar carpeta de logs y darle permisos
-RUN mkdir -p ${APP_HOME}/logs && \
-    chmod -R 755 ${APP_HOME}/logs && \
-    chown -R django:django ${APP_HOME}/logs
+# Crear carpetas necesarias con permisos correctos
+RUN mkdir -p ${APP_HOME}/logs ${APP_HOME}/staticfiles ${APP_HOME}/ecommerce_coderhouse/media && \
+    chmod -R 775 ${APP_HOME}/logs ${APP_HOME}/staticfiles ${APP_HOME}/ecommerce_coderhouse/media && \
+    chown -R django:django ${APP_HOME}/logs ${APP_HOME}/staticfiles ${APP_HOME}/ecommerce_coderhouse/media
 
 # make django owner of the WORKDIR directory as well.
 RUN chown -R django:django ${APP_HOME}
 
-USER django
+# No cambiar a USER django aquí, el entrypoint lo hará después de ajustar permisos
 
 ENTRYPOINT ["/entrypoint"]
