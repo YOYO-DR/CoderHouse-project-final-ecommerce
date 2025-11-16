@@ -32,6 +32,8 @@ services:
         limits:
           cpus: ${DJANGO_CPU:-1}
           memory: ${DJANGO_RAM:-1g}
+    networks:
+      - dokploy-network
 
   pgbouncer:
     build:
