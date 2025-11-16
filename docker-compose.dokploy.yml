@@ -19,7 +19,6 @@ services:
       - production_django_media:/app/ecommerce_coderhouse/media
       - production_django_static:/app/staticfiles
     depends_on:
-      - postgres
       - redis
     env_file:
       - ./.env
